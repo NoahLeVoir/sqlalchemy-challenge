@@ -35,6 +35,9 @@ session = Session(engine)
 app = Flask(__name__)
 
 # Route creation
+## When running the app.py I kept having trouble with the links not working the first time I click them, but always working the second time.
+## I don't know why this is the case, as the routes and queries definately work, the page just typically does not load properly the first time
+
 # Home Route
 @app.route("/")
 def welcome():
@@ -79,10 +82,10 @@ def precipitation():
 @app.route("/api/v1.0/stations")
 def stations():
         # Query for all stations
-        all_stations = session.query(Station.station, Station.name).all()
+        stations = session.query(Station.station, Station.name).all()
         
         # Convert List
-        station_list = list(all_stations)
+        station_list = list(stations)
         
         # Return JSON List of stations
         return jsonify(station_list)
