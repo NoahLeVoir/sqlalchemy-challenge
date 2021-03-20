@@ -78,13 +78,13 @@ def precipitation():
 # Station Route
 @app.route("/api/v1.0/stations")
 def stations():
-        # Return a JSON List of Stations From the Dataset
+        # Query for all stations
         all_stations = session.query(Station.station, Station.name).all()
         
         # Convert List
         station_list = list(all_stations)
         
-        # Return JSON List
+        # Return JSON List of stations
         return jsonify(station_list)
 
 # TOBs Route

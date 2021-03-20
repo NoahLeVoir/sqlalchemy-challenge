@@ -1,14 +1,24 @@
-# sqlalchemy-challenge
-HW 10 for UMN Data Analytics and Visualization Bootcamp
-
-
 # SQLAlchemy Homework - Surfs Up!
 
 ## Noah LeVoir
 
 This repo contains the following items:
-- Update this once repo is populated
+- A Bonus folder*
+- An Image folder
+- A Resources folder with:
+  - hawaii.sqlite
+  - hawaii_measurements.csv
+  - hawaii_stations.csv
 
+- A .gitignore file
+- climate.ipynb containing the script for the Climate Analysis and Station Anlaysis solutions
+- app.py containing the script for the Climate App solution
+- This readme file
+
+* The bonus folder and script is intentionally left blank
+
+
+The following is the prompt given for the homework.
 
 ### Before You Begin
 
