@@ -63,8 +63,79 @@ def welcome():
     </html>
     """
 
+# Precipitation Route
+@app.route("/api/v1.0/precipitation")
+def precipitation():
+        # Convert the Query Results to a Dictionary Using `date` as the Key and `prcp` as the Value
+        precip_data = session.query(Measurement.date, Measurement.prcp).order_by(Measurement.date).all()
+        
+        # Convert into a Dictionary
+        precip_data_list = dict(precip_data)
+        
+        # Return JSON Representation of Dictionary
+        return jsonify(precip_data_list)
 
+# Station Route
+@app.route("/api/v1.0/stations")
+def stations():
+        # Return a JSON List of Stations From the Dataset
+        stations = session.query(Station.station, Station.name).all()
+        
+        # Convert List
+        station_list = list(stations)
+        
+        # Return JSON List
+        return jsonify(station_list)
 
+# TOBs Route
+@app.route("/api/v1.0/tobs")
+def tobs():
+        # Query for the Dates and Temperature Observations from a Year from the Last Data Point for the most active station
+        # I know the previous year date from the climate analysis section done beforehand
+        previous_year = dt.date(2017, 8, 23) - dt.timedelta(days = 365)
+        
+        # Design a Query to Retrieve the Last 12 Months of Precipitation Data Selecting Only the `date` and `prcp` Values
+        tobs_data = session.query(Measurement.date, Measurement.tobs).\
+                
+                # I know that "USC00519281" is the most active station ID from the climate anylsis done beforehand
+                filter(Measurement.station == "USC00519281").\
+                filter(Measurement.date >= previous_year).\
+                order_by(Measurement.date).all()
+        
+        # Convert List
+        tobs_data_list = list(tobs_data)
+        
+        # Return JSON List of Temperature Observations (tobs) for the Previous Year
+        return jsonify(tobs_data_list)
+
+# Start Day Route
+@app.route("/api/v1.0/<start>")
+def start_day(start):
+        # Find the start days min, max, and average
+        start_day = session.query(Measurement.date, func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
+                filter(Measurement.date >= start).\
+                group_by(Measurement.date).all()
+        
+        # Convert List
+        start_day_list = list(start_day)
+        
+        # Return JSON List of min temp, avg temp and max temp
+        return jsonify(start_day_list)
+
+# Start to End Route
+@app.route("/api/v1.0/<start>/<end>")
+def start_to_end(start, end):
+        # Find the start days min, max, and average
+        start_to_end = session.query(Measurement.date, func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
+                filter(Measurement.date >= start).\
+                filter(Measurement.date <= end).\
+                group_by(Measurement.date).all()
+        
+        # Convert List
+        start_to_end_list = list(start_to_end)
+        
+        # Return JSON List of min temp, avg temp and max temp
+        return jsonify(start_to_end_list)
 
 
 
